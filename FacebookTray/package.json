@@ -1,0 +1,32 @@
+{
+  "name": "facebook-tray",
+  "productName": "FacebookTray",
+  "description": "Facebook Messenger on the system tray",
+  "version": "0.1.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "menubar": "^9.0.1"
+  },
+  "devDependencies": {
+    "electron": "^9.3.1",
+    "electron-builder": "^22.9.1"
+  },
+  "build": {
+    "appId": "facebook.tray",
+    "win": {
+      "target": "portable"
+    },
+    "portable": {
+      "unicode": false,
+      "artifactName": "FacebookTray.exe"
+    },
+    "extraFiles": [
+      "messenger.png",
+      "messenger@2x.png"
+    ]
+  }
+}

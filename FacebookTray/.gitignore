@@ -1,0 +1,10 @@
+#directories
+.vs
+.vscode
+bower_components
+node_modules
+dist
+
+#files
+*.tgz
+*.log

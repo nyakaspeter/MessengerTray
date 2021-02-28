@@ -1,5 +1,5 @@
 {
-  "name": "fb-messenger-tray",
+  "name": "messenger-tray",
   "productName": "MessengerTray",
   "description": "Facebook Messenger on the system tray",
   "version": "0.1.0",
@@ -17,7 +17,7 @@
     "electron-builder": "^22.9.1"
   },
   "build": {
-    "appId": "fb.messenger.tray",
+    "appId": "messenger.tray",
     "win": {
       "target": "portable"
     },
