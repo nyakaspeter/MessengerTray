@@ -1,6 +1,7 @@
 const { shell, screen, ipcMain, Menu } = require("electron");
 const { menubar } = require("menubar");
 const path = require("path");
+const fs = require("fs");
 
 global.chats = [];
 global.openChats = [];
@@ -47,26 +48,22 @@ function spawnChat(url, icon = undefined) {
     styleChat(chat, url);
 
     chat.tray.emit("click");
+
+    fs.unlink("temp.png", () => {});
   });
 
   chat.on("after-show", () => {
     if (global.openChats.length === 0) {
       chat.window.setPosition(
-        global.sidebar.window.getBounds().x -
-          global.settings.chatGap -
-          global.settings.chatWidth,
-        global.sidebar.window.getBounds().y +
-          global.sidebar.window.getBounds().height -
-          global.settings.chatHeight
+        global.sidebar.window.getBounds().x - global.settings.chatGap - global.settings.chatWidth,
+        global.sidebar.window.getBounds().y + global.sidebar.window.getBounds().height - global.settings.chatHeight
       );
     } else {
       chat.window.setPosition(
         global.openChats[global.openChats.length - 1].window.getPosition()[0] -
           global.settings.chatGap -
           global.settings.chatWidth,
-        global.sidebar.window.getBounds().y +
-          global.sidebar.window.getBounds().height -
-          global.settings.chatHeight
+        global.sidebar.window.getBounds().y + global.sidebar.window.getBounds().height - global.settings.chatHeight
       );
     }
 
@@ -76,18 +73,12 @@ function spawnChat(url, icon = undefined) {
   chat.on("after-hide", () => {
     global.openChats = global.openChats.filter((openChat) => openChat !== chat);
 
-    chat.window.setPosition(
-      screen.getPrimaryDisplay().size.width,
-      screen.getPrimaryDisplay().size.height
-    );
+    chat.window.setPosition(screen.getPrimaryDisplay().size.width, screen.getPrimaryDisplay().size.height);
 
     for (let i = 0; i < global.openChats.length; i++) {
       if (i === 0) {
         global.openChats[i].window.setBounds({
-          x:
-            global.sidebar.window.getBounds().x -
-            global.settings.chatGap -
-            global.settings.chatWidth,
+          x: global.sidebar.window.getBounds().x - global.settings.chatGap - global.settings.chatWidth,
         });
       } else {
         global.openChats[i].window.setBounds({

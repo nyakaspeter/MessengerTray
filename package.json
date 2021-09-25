@@ -3,7 +3,7 @@
   "productName": "MessengerTray",
   "description": "Facebook Messenger on the system tray",
   "version": "0.1.0",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder"
@@ -26,8 +26,8 @@
       "artifactName": "MessengerTray.exe"
     },
     "extraFiles": [
-      "messenger.png",
-      "messenger@2x.png"
+      "./messenger.png",
+      "./messenger@2x.png"
     ]
   }
 }

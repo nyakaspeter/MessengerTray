@@ -39,9 +39,7 @@ function spawnSidebar() {
 
   global.sidebar.on("after-hide", () => {
     global.sidebar.window.setBounds({
-      x:
-        global.sidebar.window.getBounds().x +
-        global.sidebar.window.getBounds().width,
+      x: global.sidebar.window.getBounds().x + global.sidebar.window.getBounds().width,
       //global.settings.sidebarWidth,
     });
     arrangeChats();
@@ -121,7 +119,7 @@ ipcMain.on("openChat", (event, msg) => {
     if (err) {
       spawnChat(url);
     } else {
-      image.write("chat.png", () => spawnChat(url, "chat.png"));
+      image.write("temp.png", () => spawnChat(url, "temp.png"));
     }
   });
 });
@@ -131,30 +129,26 @@ ipcMain.on("consoleLog", (event, msg) => {
 });
 
 function loginIfNeeded() {
-  global.sidebar.window.webContents.session.cookies
-    .get({ url: "https://www.messenger.com" })
-    .then((cookies) => {
-      if (!cookies.some((c) => c.name === "c_user")) {
-        global.sidebar.window.setBounds({
-          width: global.settings.loginSidebarWidth,
-        });
-        global.sidebar.tray.emit("click");
-        let checkLogin = setInterval(() => {
-          global.sidebar.window.webContents.session.cookies
-            .get({ url: "https://www.messenger.com" })
-            .then((cookies) => {
-              if (cookies.some((c) => c.name === "c_user")) {
-                clearInterval(checkLogin);
-                global.sidebar.window.setBounds({
-                  width: global.settings.sidebarWidth,
-                });
-                global.sidebar.positioner.move("topRight");
-                global.sidebar.window.reload();
-              }
+  global.sidebar.window.webContents.session.cookies.get({ url: "https://www.messenger.com" }).then((cookies) => {
+    if (!cookies.some((c) => c.name === "c_user")) {
+      global.sidebar.window.setBounds({
+        width: global.settings.loginSidebarWidth,
+      });
+      global.sidebar.tray.emit("click");
+      let checkLogin = setInterval(() => {
+        global.sidebar.window.webContents.session.cookies.get({ url: "https://www.messenger.com" }).then((cookies) => {
+          if (cookies.some((c) => c.name === "c_user")) {
+            clearInterval(checkLogin);
+            global.sidebar.window.setBounds({
+              width: global.settings.sidebarWidth,
             });
-        }, 1000);
-      }
-    });
+            global.sidebar.positioner.move("topRight");
+            global.sidebar.window.reload();
+          }
+        });
+      }, 1000);
+    }
+  });
 }
 
 function logOut() {
